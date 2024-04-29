@@ -1,9 +1,8 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 import random
 
 app = Flask(__name__)
 
-# Sample list of random facts
 random_facts = [
     "WHO BHADWA.",
     "Yeh LOH BACKEND",
@@ -12,10 +11,16 @@ random_facts = [
 
 @app.route("/")
 def index():
-    # Get a random fact
     fact = random.choice(random_facts)
     return render_template("index.html", fact=fact)
 
+@app.route("/allfacts")
+def show_all_facts():
+    return jsonify({"facts": random_facts})
+@app.route("/randomfact")
+def show_random_fact():
+    fact = random.choice(random_facts)
+    return jsonify({"fact": fact})
 @app.route("/post_fact", methods=["POST"])
 def post_fact():
     new_fact = request.form.get("new_fact")
